@@ -1,0 +1,7 @@
+{
+  "values": [
+    "minecraft:air",
+    "#miningpower:needs_8_level",
+    "#miningpower:needs_9_level"
+  ]
+}

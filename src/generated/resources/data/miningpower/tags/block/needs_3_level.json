@@ -1,0 +1,14 @@
+{
+  "values": [
+    "minecraft:obsidian",
+    "minecraft:crying_obsidian",
+    "minecraft:ancient_debris",
+    "minecraft:netherite_block",
+    "#miningpower:needs_4_level",
+    "#miningpower:needs_5_level",
+    "#miningpower:needs_6_level",
+    "#miningpower:needs_7_level",
+    "#miningpower:needs_8_level",
+    "#miningpower:needs_9_level"
+  ]
+}
