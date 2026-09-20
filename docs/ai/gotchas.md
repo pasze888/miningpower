@@ -17,20 +17,7 @@ as it is missing following references: #miningpower:needs_9_level
 副作用可忽略：`minecraft:air` 永远不会走到挖掘判定（`requiresCorrectToolForDrops()` 为 false
 提前返回）。其他替代方案（`addOptional`、required=false 引用）未在本项目验证。
 
-## `BlockBehaviour#getDestroyProgress` 局部变量 `i` 不是计时器
+## `getDestroyProgress` 相关 API 事实
 
-1.21.1 NeoForge 补丁版方法体（api-sources `net/minecraft/world/level/block/state/BlockBehaviour.java:393-401`）：
-
-```java
-float f = state.getDestroySpeed(level, pos);
-if (f == -1.0F) return 0.0F;
-int i = EventHooks.doPlayerHarvestCheck(player, state, level, pos) ? 30 : 100;
-return player.getDigSpeed(state, pos) / f / (float) i;
-```
-
-confluence 的 Mixin（本项目 `BlockBehaviourMixin#miningpower$deny` 改写自它）里
-`@Local int i` 条件是 `i > 30`，语义是「收割判定失败（惩罚值 100）」，不是
-「挖了超过 30 tick」。照抄 confluence 相关 Mixin 时不要按字面把它理解成计时。
-
-推论：`HarvestCheck` 事件会在客户端挖掘动画中高频触发，`GetCustomDiggingPowerEvent`
-订阅方需保持廉价。
+已移至 [docs/reference/digging-power.md](../reference/digging-power.md)：局部变量 `i` 是
+收割惩罚值（30/100）而非计时器，及本系统各判定入口的签名出处。
