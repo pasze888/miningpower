@@ -140,6 +140,8 @@ dependencies {
     // Just Enough Characters 4.6.7（jecharacters-26.1.2-neoforge-4.6.7.jar，2026-08-16）
     localRuntime "curse.maven:just-enough-characters-250702:8659850"
 
+    localRuntime "curse.maven:bookshelf-228525:8551659"
+    localRuntime "curse.maven:selene-499980:8937547"
     // To also use JEI's API at compile time (plugins, IRecipeCategory, ...), add its API artifacts
     // (published on Maven Central, which must then be added to the repositories above):
     // compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
