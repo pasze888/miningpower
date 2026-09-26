@@ -24,7 +24,8 @@ protected float getDestroyProgress(BlockState state, Player player, BlockGetter 
   「挖掘超过 30 tick」）。
 - 判定链：`doPlayerHarvestCheck` → `Player#canHarvest` → `PlayerEvent.HarvestCheck` 事件
   → 本模组 `MiningPowerEvents#harvestCheck` 覆写 `setCanHarvest`。因此镐力判定失败的
-  `#miningpower:unbreakable_if_cannot_harvest` 方块进度归 0，表现为基岩一样挖不开。
+  `#miningpower:unbreakable_if_cannot_harvest` 方块进度归 0，表现为基岩一样挖不开
+  （该行为可由 `Config#UNBREAKABLE_IF_CANNOT_HARVEST` 关闭，见 [mod-config.md](mod-config.md)）。
 - `getDestroyProgress` 由客户端挖掘动画每 tick 调用，`HarvestCheck` 随之高频触发；
   `GetCustomDiggingPowerEvent` 订阅方需保持廉价。
 
