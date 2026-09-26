@@ -49,7 +49,8 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    // jar 名与发布 tag 对齐：<mod_id>-<mc_version>-neoforge-<mod_version>，见工作区 AGENTS.md §1.4 的 tag 格式。
+    archivesName = "${mod_id}-${minecraft_version}-neoforge"
 }
 
 // Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
