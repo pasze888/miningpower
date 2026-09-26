@@ -135,9 +135,10 @@ dependencies {
     // Declared with localRuntime (not runtimeOnly) so they are present when running the game
     // but are NOT published as dependencies of this mod.
     // Just Enough Items - item and recipe viewing.
-    // TODO(26.1.2): 下列 fileId 是 1.21.1 的构建，需换成 26.1.2 对应版本后再启用。
-    // localRuntime "curse.maven:jei-238222:8792638"
-    // localRuntime "curse.maven:just-enough-characters-250702:8771217"
+    // Just Enough Items 29.43.0.105（jei-26.1.2-neoforge-29.43.0.105.jar，2026-09-24）
+    localRuntime "curse.maven:jei-238222:8964958"
+    // Just Enough Characters 4.6.7（jecharacters-26.1.2-neoforge-4.6.7.jar，2026-08-16）
+    localRuntime "curse.maven:just-enough-characters-250702:8659850"
 
     // To also use JEI's API at compile time (plugins, IRecipeCategory, ...), add its API artifacts
     // (published on Maven Central, which must then be added to the repositories above):
