@@ -61,11 +61,6 @@ public record DiggingPower(int power) {
         return -1;
     }
 
-    /// 原版 ToolMaterial 的对应镐力；非原版材料返回 -1。
-    public static int getPowerForVanillaTier(ToolMaterial material) {
-        return VANILLA_MATERIAL_POWER.getOrDefault(material.incorrectBlocksForDrops(), -1);
-    }
-
     /// 镐力 ======================= 等级
     /// 全都能挖
     /// 201 ======================= 9
