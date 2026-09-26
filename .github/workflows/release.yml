@@ -12,3 +12,6 @@ jobs:
   release:
     uses: pasze888/mc-mod-ci/.github/workflows/release.yml@main
     secrets: inherit
+    with:
+      # 本分支目标 MC 26.1.2；JDK 与发布元数据的 java 由 gradle.properties 的 java_version=25 决定。
+      game-versions: '26.1.2'

@@ -7,7 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
-@EventBusSubscriber(modid = MiningPower.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MiningPower.MODID)
 public final class ModDataMaps {
     /// 给任意物品注册静态镐力的数据通道，数据包亦可写入（随 S2C 自动同步）。
     public static final DataMapType<Item, DiggingPower> DIGGING_POWER = DataMapType

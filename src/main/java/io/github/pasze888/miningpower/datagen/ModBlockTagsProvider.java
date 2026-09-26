@@ -7,16 +7,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 /// 方块分级沿用 Confluence（汇流）的思路（原版高硬度方块归 3 级，4~9 级留给数据包/其他模组）：
 /// 3 级门槛为镐力 ≥46，恰好落在原版「钻石可挖、铁不可挖」一侧。
 public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, MiningPower.MODID, existingFileHelper);
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, MiningPower.MODID);
     }
 
     @Override

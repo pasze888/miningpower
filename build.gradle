@@ -52,17 +52,12 @@ base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// 编译用 Java 版本由 gradle.properties 的 java_version 决定，与 mc-mod-ci 选择 CI JDK 的来源一致。
+java.toolchain.languageVersion = JavaLanguageVersion.of(project.java_version)
 
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
 
     // This line is optional. Access Transformers are automatically detected
     // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
@@ -138,9 +133,9 @@ dependencies {
     // Declared with localRuntime (not runtimeOnly) so they are present when running the game
     // but are NOT published as dependencies of this mod.
     // Just Enough Items - item and recipe viewing.
-    localRuntime "curse.maven:jei-238222:8792638"
-    // Just Enough Characters - Chinese pinyin search in JEI and other mods (client side).
-    localRuntime "curse.maven:just-enough-characters-250702:8771217"
+    // TODO(26.1.2): 下列 fileId 是 1.21.1 的构建，需换成 26.1.2 对应版本后再启用。
+    // localRuntime "curse.maven:jei-238222:8792638"
+    // localRuntime "curse.maven:just-enough-characters-250702:8771217"
 
     // To also use JEI's API at compile time (plugins, IRecipeCategory, ...), add its API artifacts
     // (published on Maven Central, which must then be added to the repositories above):

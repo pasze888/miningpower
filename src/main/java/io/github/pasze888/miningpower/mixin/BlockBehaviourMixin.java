@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 /// （LGPL-3.0-or-later）。
 @Mixin(BlockBehaviour.class)
 public abstract class BlockBehaviourMixin {
-    @ModifyExpressionValue(method = "getDestroyProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getDigSpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"))
+    @ModifyExpressionValue(method = "getDestroyProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"))
     private float miningpower$deny(float original, @Local(argsOnly = true) BlockState state, @Local int i) {
         if (i > 30 && state.is(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST)) {
             return 0.0F;

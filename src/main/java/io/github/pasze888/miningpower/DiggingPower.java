@@ -1,12 +1,17 @@
 package io.github.pasze888.miningpower;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
+
+import java.util.Map;
 
 /// 镐力（挖掘能力数值），一般用于镐。
 /// 判定逻辑改写自 Confluence（汇流）模组的 `org.confluence.mod.common.init.ModTiers`
@@ -16,29 +21,49 @@ import net.neoforged.neoforge.common.NeoForge;
 public record DiggingPower(int power) {
     public static final Codec<DiggingPower> CODEC = ExtraCodecs.POSITIVE_INT.xmap(DiggingPower::new, DiggingPower::power);
 
-    /// 取值优先级：`miningpower:digging_power` data map → 原版 Tier 映射 → 事件放行。
+    /// 原版 ToolMaterial 的「不可掉落」标签 → 镐力。1.21.2 起 `Tier`/`Tiers` 被 `ToolMaterial` 取代，
+    /// 物品上不再保留材料实例，只能通过 `DataComponents#TOOL` 里那条 deniesDrops 规则引用的标签反查。
+    /// COPPER 是后来新增的材料，上游 Confluence 无对应数值，这里取在 STONE(38) 与 IRON(40) 之间。
+    private static final Map<TagKey<Block>, Integer> VANILLA_MATERIAL_POWER = Map.of(
+            ToolMaterial.WOOD.incorrectBlocksForDrops(), 35,
+            ToolMaterial.STONE.incorrectBlocksForDrops(), 38,
+            ToolMaterial.COPPER.incorrectBlocksForDrops(), 39,
+            ToolMaterial.GOLD.incorrectBlocksForDrops(), 39,
+            ToolMaterial.IRON.incorrectBlocksForDrops(), 40,
+            ToolMaterial.DIAMOND.incorrectBlocksForDrops(), 59,
+            ToolMaterial.NETHERITE.incorrectBlocksForDrops(), 90);
+
+    /// 取值优先级：`miningpower:digging_power` data map → 原版材料映射 → 事件放行。
     /// 无挖掘能力的物品返回 -1。
     public static int getPower(ItemStack itemStack) {
         int power = -1;
-        DiggingPower diggingPower = itemStack.getItemHolder().getData(ModDataMaps.DIGGING_POWER);
+        DiggingPower diggingPower = itemStack.typeHolder().getData(ModDataMaps.DIGGING_POWER);
         if (diggingPower != null) {
             power = diggingPower.power;
-        } else if (itemStack.getItem() instanceof TieredItem tieredItem && tieredItem.getTier() instanceof Tiers tiers) {
-            power = getPowerForVanillaTier(tiers);
+        } else {
+            power = getPowerForVanillaMaterial(itemStack);
         }
         return NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack, power)).getPower();
     }
 
-    /// 原版 Tiers 的对应镐力
-    public static int getPowerForVanillaTier(Tiers tiers) {
-        return switch (tiers) {
-            case WOOD -> 35;
-            case STONE -> 38;
-            case GOLD -> 39;
-            case IRON -> 40;
-            case DIAMOND -> 59;
-            case NETHERITE -> 90;
-        };
+    /// 从 `DataComponents#TOOL` 的 deniesDrops 规则取出它引用的标签，据此识别原版材料。
+    /// 非原版材料（或无 tool 组件）返回 -1，交由 data map / 事件决定。
+    private static int getPowerForVanillaMaterial(ItemStack itemStack) {
+        Tool tool = itemStack.get(DataComponents.TOOL);
+        if (tool == null) return -1;
+        for (Tool.Rule rule : tool.rules()) {
+            Boolean correctForDrops = rule.correctForDrops().orElse(null);
+            if (correctForDrops != null && !correctForDrops) {
+                TagKey<Block> tag = rule.blocks().unwrapKey().orElse(null);
+                if (tag != null) return VANILLA_MATERIAL_POWER.getOrDefault(tag, -1);
+            }
+        }
+        return -1;
+    }
+
+    /// 原版 ToolMaterial 的对应镐力；非原版材料返回 -1。
+    public static int getPowerForVanillaTier(ToolMaterial material) {
+        return VANILLA_MATERIAL_POWER.getOrDefault(material.incorrectBlocksForDrops(), -1);
     }
 
     /// 镐力 ======================= 等级
