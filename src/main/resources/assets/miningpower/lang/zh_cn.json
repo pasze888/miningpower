@@ -1,3 +1,4 @@
 {
-  "tooltip.miningpower.digging_power": "镐力：%s"
+  "tooltip.miningpower.digging_power": "镐力：%s",
+  "miningpower.configuration.unbreakable_if_cannot_harvest": "镐力不足则无法挖掘"
 }
