@@ -85,8 +85,10 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
-        data {
-            data()
+        // 26.1.2 起 MDG 的 run 类型改为 clientData / serverData（原 data 已移除）；
+        // NeoForge 把 client 与 server 的数据生成合并成一次 clientData run，故只保留它。
+        clientData {
+            clientData()
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
             // gameDirectory = project.file('run-data')
 
