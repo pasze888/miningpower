@@ -1,3 +1,4 @@
 {
-  "tooltip.miningpower.digging_power": "Digging Power: %s"
+  "tooltip.miningpower.digging_power": "Digging Power: %s",
+  "miningpower.configuration.unbreakable_if_cannot_harvest": "Unmineable With Low Pickaxe Power"
 }
