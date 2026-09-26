@@ -2,13 +2,14 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-A Terraria-style mining-level system for NeoForge 1.21.1, extracted from the
-[Confluence](https://github.com/Magic-team-jvav/confluence) mod (LGPL-3.0-or-later).
+A Terraria-style mining-level system for Minecraft 26.1.2 / NeoForge 26.1.2, extracted
+from the [Confluence](https://github.com/Magic-team-jvav/confluence) mod (LGPL-3.0-or-later).
 
 Blocks are gated by nine discrete levels (`miningpower:needs_1_level` … `needs_9_level`
 block tags, downward-inclusive). Tools carry a continuous numeric **digging power**
 (镐力); the power value decides the highest block level a tool can harvest. With
-insufficient power, high-level blocks simply cannot be broken — like bedrock.
+insufficient power, high-level blocks simply cannot be broken — like bedrock (see
+[Configuration](#configuration) to turn that off).
 
 ## Mechanics
 
@@ -37,15 +38,26 @@ Only items in `minecraft:pickaxes` (main hand) go through the power check.
 - **Item power**: assign the `miningpower:digging_power` data map (positive int) to any
   item via datapack, or subscribe to `GetCustomDiggingPowerEvent` on the NeoForge event
   bus for dynamic power.
-- **Hard lock set**: blocks in `miningpower:unbreakable_if_cannot_harvest` become
+- **Blocks that cannot be mined**: blocks in `miningpower:unbreakable_if_cannot_harvest` become
   unbreakable (destroy progress forced to 0) when the harvest check fails; the tag
-  covers `needs_2..9` by default.
+  covers `needs_2..9` by default. Toggle it with the `unbreakableIfCannotHarvest`
+  config option.
+
+## Configuration
+
+Config file: `config/miningpower-common.toml` (COMMON type — the client and the server
+each read their own local file, and it is **not** synced over the network; keep both
+sides consistent on a dedicated server).
+
+| Key | Default | Description |
+|---|---|---|
+| `unbreakableIfCannotHarvest` | `true` | Force the destroy progress of blocks in `miningpower:unbreakable_if_cannot_harvest` to 0 when the pickaxe power is insufficient (harvest check fails). When `false`, they fall back to vanilla wrong-tool behaviour: slow to break and dropping nothing. |
 
 ## Commands
 
 ```
 ./gradlew build          # compile + jar
-./gradlew runData        # regenerate block tags into src/generated/resources
+./gradlew clientData     # regenerate block tags into src/generated/resources
 ./gradlew runClient      # dev client
 ```
 
